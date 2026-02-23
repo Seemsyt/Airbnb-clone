@@ -19,7 +19,7 @@ const ConversationDetail = () => {
         ],
     }
   return (
-    <div className='mx-auto w-full max-w-6xl px-4 my-9 py-9 sm:px-6 text-black '>
+    <div>
         <h1 className='text-2xl font-bold'>Conversation Detail</h1>
         <div className='flex flex-col gap-2'>
             <div className='border border-zinc-200 rounded-2xl p-4 overflow-hidden shadow-sm transition hover:-translate-y-1 hover:shadow-md col-span-2'>

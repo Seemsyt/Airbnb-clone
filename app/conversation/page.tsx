@@ -4,9 +4,9 @@ import Inbox from '../component/Inbox'
 
 const Conversation = () => {
   return (
-    <div className='mx-auto w-full max-w-6xl px-4 my-9 py-9 sm:px-6 text-black flex flex-row gap-4 min-h-[50vh]'>
-        <Inbox />
-       <div className='w-full'>
+    <div className='flex min-h-screen'>
+         <div className="w-[20%] border-r overflow-y-auto"><Inbox></Inbox></div>
+       <div className='w-[50%] border-r overflow-y-auto'>
         <ConversationDetail />
        </div>
     </div>
