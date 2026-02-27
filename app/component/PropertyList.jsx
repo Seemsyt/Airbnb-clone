@@ -1,64 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { properties } from "@/lib/properties";
 
 const PropertyList = () => {
-  const properties = [
-    {
-      id: 1,
-      title: "Ocean View Villa",
-      location: "Malibu, California",
-      price: 320,
-      rating: 4.9,
-      image: "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?q=80&w=1200&auto=format&fit=crop",
-      tag: "Beach",
-    },
-    {
-      id: 2,
-      title: "Forest Cabin Retreat",
-      location: "Bend, Oregon",
-      price: 180,
-      rating: 4.7,
-      image: "https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=1200&auto=format&fit=crop",
-      tag: "Forest",
-    },
-    {
-      id: 3,
-      title: "Modern City Loft",
-      location: "Seattle, Washington",
-      price: 210,
-      rating: 4.8,
-      image: "https://images.unsplash.com/photo-1460317442991-0ec209397118?q=80&w=1200&auto=format&fit=crop",
-      tag: "City",
-    },
-    {
-      id: 4,
-      title: "Mountain Escape House",
-      location: "Aspen, Colorado",
-      price: 275,
-      rating: 4.9,
-      image: "https://images.unsplash.com/photo-1518780664697-55e3ad937233?q=80&w=1200&auto=format&fit=crop",
-      tag: "Mountain",
-    },
-    {
-      id: 5,
-      title: "Desert Glass Home",
-      location: "Scottsdale, Arizona",
-      price: 245,
-      rating: 4.6,
-      image: "https://images.unsplash.com/photo-1430285561322-7808604715df?q=80&w=1200&auto=format&fit=crop",
-      tag: "Desert",
-    },
-    {
-      id: 6,
-      title: "Lakefront Cottage",
-      location: "Lake Tahoe, Nevada",
-      price: 260,
-      rating: 4.8,
-      image: "https://images.unsplash.com/photo-1472228283686-42356d789f66?q=80&w=1200&auto=format&fit=crop",
-      tag: "Lake",
-    },
-  ];
-
   return (
     <section className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6">
       <div className="mb-6 flex items-end justify-between">
@@ -70,15 +15,16 @@ const PropertyList = () => {
             Property List
           </h2>
         </div>
-        <Button variant="outline" size="sm">
-          View all
+        <Button asChild variant="outline" size="sm">
+          <Link href="/properties">View all</Link>
         </Button>
       </div>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {properties.map((property) => (
-          <article
+          <Link
             key={property.id}
+            href={`/properties/${property.id}`}
             className="overflow-hidden rounded-2xl border border-zinc-200 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md"
           >
             <div className="relative h-56 w-full">
@@ -117,7 +63,7 @@ const PropertyList = () => {
                 <Button size="sm">Book now</Button>
               </div>
             </div>
-          </article>
+          </Link>
         ))}
       </div>
     </section>

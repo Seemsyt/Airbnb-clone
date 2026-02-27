@@ -1,20 +1,48 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { AnimatePresence, motion } from "motion/react";
-import { Menu, Plus, UserCircle2, X } from "lucide-react";
+import { LogOut, Menu, Plus, UserCircle2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import SearchFilter from "./SearchFilter";
 
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "Explore", href: "#" },
+  { label: "Properties", href: "/properties" },
+  { label: "Profile", href: "/profile" },
+  { label: "Conversation", href: "/conversation" },
 ];
+
+const AUTH_STORAGE_KEY = "eccomerce_auth";
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const syncAuthState = () => {
+      if (typeof window === "undefined") return;
+      setIsLoggedIn(Boolean(window.localStorage.getItem(AUTH_STORAGE_KEY)));
+    };
+
+    syncAuthState();
+    window.addEventListener("storage", syncAuthState);
+    window.addEventListener("auth-change", syncAuthState);
+
+    return () => {
+      window.removeEventListener("storage", syncAuthState);
+      window.removeEventListener("auth-change", syncAuthState);
+    };
+  }, []);
+
+  const handleLogout = () => {
+    window.localStorage.removeItem(AUTH_STORAGE_KEY);
+    window.dispatchEvent(new Event("auth-change"));
+    setIsMobileMenuOpen(false);
+  };
 
   return (
     <motion.nav
@@ -49,14 +77,35 @@ const Navbar = () => {
           <SearchFilter />
 
           <div className="flex items-center gap-2">
-            <Button size="sm" className="gap-1.5">
-              <Plus className="h-4 w-4" />
-              Add property
-            </Button>
-            <Button variant="outline" size="sm" className="gap-1.5">
-              <UserCircle2 className="h-4 w-4" />
-              User
-            </Button>
+            {isLoggedIn ? (
+              <>
+                <Button asChild size="sm" className="gap-1.5">
+                  <Link href="/add-property" className="flex items-center gap-1.5">
+                    <Plus className="h-4 w-4" />
+                    Add property
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="sm">
+                  <Link href="/myProperties">My properties</Link>
+                </Button>
+                <Button variant="outline" size="sm" className="gap-1.5" onClick={handleLogout}>
+                  <LogOut className="h-4 w-4" />
+                  Logout
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button asChild variant="outline" size="sm" className="gap-1.5">
+                  <Link href="/login" className="flex items-center gap-1.5">
+                    <UserCircle2 className="h-4 w-4" />
+                    Log in
+                  </Link>
+                </Button>
+                <Button asChild size="sm">
+                  <Link href="/signup">Sign up</Link>
+                </Button>
+              </>
+            )}
           </div>
         </div>
 
@@ -101,16 +150,42 @@ const Navbar = () => {
 
               <SearchFilter className="w-full" inputClassName="w-full" />
 
-              <div className="grid grid-cols-2 gap-2">
-                <Button size="sm" className="gap-1.5">
-                  <Plus className="h-4 w-4" />
-                  Add
-                </Button>
-                <Button variant="outline" size="sm" className="gap-1.5">
-                  <UserCircle2 className="h-4 w-4" />
-                  User
-                </Button>
-              </div>
+              {isLoggedIn ? (
+                <div className="grid grid-cols-3 gap-2">
+                  <Button asChild size="sm" className="gap-1.5">
+                    <Link
+                      href="/add-property"
+                      className="flex items-center gap-1.5"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Plus className="h-4 w-4" />
+                      Add
+                    </Link>
+                  </Button>
+                  <Button asChild variant="outline" size="sm">
+                    <Link href="/myProperties" onClick={() => setIsMobileMenuOpen(false)}>
+                      My props
+                    </Link>
+                  </Button>
+                  <Button variant="outline" size="sm" className="gap-1.5" onClick={handleLogout}>
+                    <LogOut className="h-4 w-4" />
+                    Logout
+                  </Button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-2">
+                  <Button asChild variant="outline" size="sm" className="gap-1.5">
+                    <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                      Log in
+                    </Link>
+                  </Button>
+                  <Button asChild size="sm" className="gap-1.5">
+                    <Link href="/signup" onClick={() => setIsMobileMenuOpen(false)}>
+                      Sign up
+                    </Link>
+                  </Button>
+                </div>
+              )}
             </div>
           </motion.div>
         )}

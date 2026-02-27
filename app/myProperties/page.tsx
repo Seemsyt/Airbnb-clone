@@ -42,7 +42,7 @@ const MyProperties = () => {
   return (
     <div className='mx-auto w-full max-w-6xl px-4 my-9 py-9 sm:px-6 text-black '>
         <h1 className='text-2xl font-bold'>My Properties</h1>
-        <div className='grid grid-cols-1 '>
+        <div className='grid grid-cols-1 gap-2'>
             {properties.map((property) => (
                 <div key={property.id} className='border border-zinc-200 rounded-2xl p-4 overflow-hidden shadow-sm transition hover:-translate-y-1 hover:shadow-md w-full'>
                     <div className='flex flex-row gap-2'>
